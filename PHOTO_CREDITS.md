@@ -131,3 +131,8 @@
 - 원본 이미지: https://science.nasa.gov/wp-content/uploads/2025/10/poyang_oli_2022191-2022239_detail.jpg
 - 재사용 조건: https://www.nasa.gov/nasa-brand-center/images-and-media/
 - 사진과 교과서 사례의 관계: 2022년 7월 10일과 8월 27일 포양호 비교. 가시광·적외선 관측을 이용한 색 합성 영상
+
+## 피해 사례 세계지도
+
+- 바탕 영상은 NASA Earth Observatory의 *Blue Marble: Next Generation with Topography* 중 2004년 6월 전 지구 위성 합성 영상입니다. Reto Stöckli와 NASA Earth Observatory가 제작했습니다. [NASA 자료 설명](https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography/) · [원본 JPEG](https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography/june/world.topo.200406.3x5400x2700.jpg)
+- 국경선과 나라의 대표 위치는 Natural Earth v5.1.2의 1:110m 자료입니다. 육상 국경선을 바탕 영상과 같은 등거리 원통 도법에 맞춰 합성하고 2400 × 1200 WebP로 줄였습니다. 여섯 나라의 표시는 국가 자료의 LABEL_X·LABEL_Y를 사용합니다. [Natural Earth 자료](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/) · [퍼블릭 도메인 이용 조건](https://www.naturalearthdata.com/about/terms-of-use/)

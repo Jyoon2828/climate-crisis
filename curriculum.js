@@ -2,18 +2,18 @@
  'use strict';
  const LESSONS=[
  {id:'phenomena',no:'01',title:'현상 찾기',question:'어떤 변화가 일어나고 있을까?',pages:'교과서 90~93쪽',mission:'사진과 수치를 근거로 기후 현상의 특징을 설명해요.',minutes:40},
- {id:'actions',no:'02',title:'우리의 행동',question:'우리의 선택이 쌓이면 어떻게 될까?',pages:'교과서 94~95쪽',mission:'행동을 예상하고 반복해 본 뒤, 두 미래를 비교해요.',minutes:40},
- {id:'severity',no:'03',title:'문제의 심각성',question:'세계 곳곳에서는 무슨 일이?',pages:'교과서 96~97쪽',mission:'피해 사례의 장소와 영향을 살펴보고 심각성을 토의해요.',minutes:40},
- {id:'sea',no:'04',title:'해수면 실험',question:'바닷물이 높아지면 어디가 잠길까?',pages:'교과서 98~99쪽',mission:'예상 → 물 넣기 → 관찰 → 위치 바꾸기로 탐구해요.',minutes:40},
+ {id:'actions',no:'02',title:'우리의 행동',question:'우리의 선택이 쌓이면 어떻게 될까?',pages:'교과서 94~95쪽',mission:'마을에서 물건을 눌러 행동을 쌓고, 두 미래를 비교해요.',minutes:40},
+ {id:'severity',no:'03',title:'문제의 심각성',question:'세계 곳곳에서는 무슨 일이?',pages:'교과서 96~97쪽',mission:'지도에서 나라를 눌러 피해 사진을 보고, 생활에 생긴 변화를 비교해요.',minutes:40},
+ {id:'sea',no:'04',title:'해수면 실험',question:'바닷물이 높아지면 어디가 잠길까?',pages:'교과서 98~99쪽',mission:'수조의 두 장면을 비교하고 해수면 높이 변화가 우리 생활에 미칠 영향을 예상해요.',minutes:40},
  {id:'life',no:'05',title:'생활의 변화',question:'내 하루는 어떻게 달라질까?',pages:'교과서 100~101쪽',mission:'학교·농장·도로·주거의 변화를 연결하여 설명해요.',minutes:40}
  ];
  const WORLDS=[
- {id:'canada',country:'캐나다',year:2021,hazard:'폭염',x:19,y:20,title:'더위가 길어지고 큰 산불이 발생했어요.',clues:['폭염이 오래 이어졌어요.','큰 산불이 발생했어요.'],question:'집과 학교 주변에 큰 산불이 생기면 하루가 어떻게 달라질까요?'},
- {id:'china',country:'중국',year:2022,hazard:'가뭄',x:78,y:38,title:'가뭄이 길어져 강바닥이 드러났어요.',clues:['비가 부족한 기간이 길어졌어요.','강의 물이 줄어들었어요.'],question:'강의 물이 부족하면 농사와 물 사용에 어떤 어려움이 생길까요?'},
- {id:'nigeria',country:'나이지리아',year:2022,hazard:'홍수',x:52,y:53,title:'심한 홍수로 많은 사람이 피해를 입었어요.',clues:['마을과 생활 공간에 물이 들어왔어요.','많은 주민이 피해를 입었어요.'],question:'집과 도로가 잠기면 어떤 도움이 먼저 필요할까요?'},
- {id:'germany',country:'독일',year:2021,hazard:'폭설',x:52,y:23,title:'심한 폭설로 도시의 교통이 마비되었어요.',clues:['많은 눈이 쌓였어요.','이동이 어려워졌어요.'],question:'버스와 물건을 나르는 차가 멈추면 어떤 일이 이어질까요?'},
- {id:'brazil',country:'브라질',year:2022,hazard:'한파',x:34,y:70,title:'심한 한파로 농작물이 피해를 입었어요.',clues:['강한 추위가 찾아왔어요.','옥수수 등 농작물이 피해를 입었어요.'],question:'작물이 추위에 상하면 농부와 시장에 어떤 영향이 있을까요?'},
- {id:'india',country:'인도',year:2023,hazard:'폭염',x:69,y:43,title:'전기가 부족해 냉방 기기 사용이 어려웠어요.',clues:['폭염이 오래 이어졌어요.','전기가 부족해 냉방 기기를 쓰기 어려웠어요.'],question:'더운 날 전기를 충분히 쓸 수 없다면 누가 특히 힘들까요?'}
+ {id:'canada',country:'캐나다',year:2021,hazard:'폭염',longitude:-101.9107,latitude:60.324287,title:'더위가 길어지고 큰 산불이 발생했어요.',clues:['폭염이 오래 이어졌어요.','큰 산불이 발생했어요.'],question:'집과 학교 주변에 큰 산불이 생기면 하루가 어떻게 달라질까요?'},
+ {id:'china',country:'중국',year:2022,hazard:'가뭄',longitude:106.337289,latitude:32.498178,title:'가뭄이 길어져 강바닥이 드러났어요.',clues:['비가 부족한 기간이 길어졌어요.','강의 물이 줄어들었어요.'],question:'강의 물이 부족하면 농사와 물 사용에 어떤 어려움이 생길까요?'},
+ {id:'nigeria',country:'나이지리아',year:2022,hazard:'홍수',longitude:7.50322,latitude:9.439799,title:'심한 홍수로 많은 사람이 피해를 입었어요.',clues:['마을과 생활 공간에 물이 들어왔어요.','많은 주민이 피해를 입었어요.'],question:'집과 도로가 잠기면 어떤 도움이 먼저 필요할까요?'},
+ {id:'germany',country:'독일',year:2021,hazard:'폭설',longitude:9.678348,latitude:50.961733,title:'심한 폭설로 도시의 교통이 마비되었어요.',clues:['많은 눈이 쌓였어요.','이동이 어려워졌어요.'],question:'버스와 물건을 나르는 차가 멈추면 어떤 일이 이어질까요?'},
+ {id:'brazil',country:'브라질',year:2022,hazard:'한파',longitude:-49.55945,latitude:-12.098687,title:'심한 한파로 농작물이 피해를 입었어요.',clues:['강한 추위가 찾아왔어요.','옥수수 등 농작물이 피해를 입었어요.'],question:'작물이 추위에 상하면 농부와 시장에 어떤 영향이 있을까요?'},
+ {id:'india',country:'인도',year:2023,hazard:'폭염',longitude:79.358105,latitude:22.686852,title:'전기가 부족해 냉방 기기 사용이 어려웠어요.',clues:['폭염이 오래 이어졌어요.','전기가 부족해 냉방 기기를 쓰기 어려웠어요.'],question:'더운 날 전기를 충분히 쓸 수 없다면 누가 특히 힘들까요?'}
  ];
  const PLACES=[
  {id:'school',name:'학교·운동장',x:-2.2,z:-2.1,icon:'school',effects:{heat:['뜨거워진 운동장','실외 활동 중단','체육 수업과 놀이 장소 변경'],drought:['학교에서 쓸 물 부족','물 사용 시간 조절','급식·청소 방법 변경'],flood:['통학로 침수','등교가 어려워짐','안전한 길 확인·수업 일정 조정'],snow:['눈이 쌓인 통학로','미끄러짐·버스 지연','제설과 안전한 등교 방법 필요'],cold:['수도 시설이 얼 수 있음','물 사용·난방의 어려움','시설 점검과 보온 필요'],night:['밤에도 식지 않는 더위','잠을 충분히 자기 어려움','다음 날 집중과 활동에 영향']}},

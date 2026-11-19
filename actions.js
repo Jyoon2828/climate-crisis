@@ -1,7 +1,14 @@
 (function(root){
   'use strict';
   const MAX=120,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-  function clean(input){return (Array.isArray(input)?input:[]).filter(e=>e&&Number.isInteger(e.topic)&&e.topic>=0&&e.topic<6&&[-1,1].includes(e.level)).slice(0,MAX).map((e,i)=>({topic:e.topic,level:e.level,id:typeof e.id==='string'?e.id:'action-'+i}));}
+  function clean(input){
+    const events=(Array.isArray(input)?input:[]).filter(e=>e&&Number.isInteger(e.topic)&&e.topic>=0&&e.topic<6&&[-1,1].includes(e.level));
+    return events.slice(0,MAX).map((e,i)=>{
+      const item={topic:e.topic,level:e.level,id:typeof e.id==='string'?e.id:'action-'+i};
+      if(e.source==='village')item.source='village';
+      return item;
+    });
+  }
   function emptyCounts(){return Array.from({length:6},()=>({high:0,low:0}));}
   function simulate(input,baseline=false){
     const events=clean(input),counts=emptyCounts(),levels=Array(6).fill(0),loads=Array(6).fill(0),plants=[];
