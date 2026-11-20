@@ -1,0 +1,66 @@
+.worksheet-modal[open] {
+  width:min(870px,calc(100vw - 24px)); max-width:none; max-height:none; margin:auto; padding:0;
+  overflow:hidden; border:1px solid #ccdbcf; border-radius:18px; font-size:17px;
+}
+.worksheet-modal::backdrop { background:rgb(12 39 32 / 65%); }
+.worksheet-modal .ws-dialog {display:flex; flex-direction:column; max-height:min(92dvh,900px); background:#f3f6ef; color:#1d3c32;}
+.ws-header {display:flex; gap:10px; align-items:center; padding:13px 20px 10px; background:#fff;}
+.ws-header h2 {flex:1; margin:0; font-size:clamp(22px,3vw,29px); letter-spacing:-.045em;}
+.ws-header .close {width:42px; height:42px; font-size:26px;}
+.ws-all,.ws-save button {min-height:42px; padding:5px 12px; background:white; color:#254d41; border:1px solid #bfd0c3; border-radius:9px; font-size:15px; font-weight:700;}
+.ws-all {background:#eef4ef; border-color:transparent;}
+.ws-identity {display:grid; grid-template-columns:1.35fr 1fr .75fr; gap:12px; padding:0 20px 12px; border-bottom:1px solid #d5dfd1; background:white;}
+.ws-identity label {display:block; color:#35564a; font-size:14px; font-weight:700;}
+.ws-identity small {font-size:12px; font-weight:500;}
+.ws-identity select,.ws-identity input,.ws-page select {height:42px; width:100%; margin-top:3px; padding:4px 10px; border:1px solid #b8cabd; border-radius:8px; background:#fff; color:#1c3e32; font:inherit; font-size:16px; box-sizing:border-box;}
+.ws-scroll {overflow:auto; overscroll-behavior:contain; min-height:0; padding:12px 16px 16px; scrollbar-gutter:stable;}
+.ws-paper {padding:16px 20px 20px; background:#fff; border:1px solid #d5dfd5; border-top:5px solid var(--ws-color); border-radius:10px;}
+.ws-paper header {padding-bottom:12px; margin-bottom:12px; border-bottom:1px solid #dce5dc;}
+.ws-paper header small {font-weight:700; color:var(--ws-color); font-size:14px;}
+.ws-paper h3 {margin:4px 0 0; font-size:clamp(22px,2.5vw,29px); line-height:1.35; letter-spacing:-.045em;}
+.ws-answer,.ws-fact {display:block; margin:0 0 13px;}
+.ws-paper > :last-child {margin-bottom:0;}
+.ws-answer span,.ws-fact h4 {display:block; margin:0 0 5px; color:#24443a; font-size:17px; font-weight:700; line-height:1.45;}
+.ws-answer textarea {display:block; resize:vertical; width:100%; min-height:59px; max-height:40vh; padding:8px 12px; color:#203c32; background:#fbfcf9; border:1px solid #b9cdbd; border-radius:8px; font:inherit; font-size:17px; line-height:1.5; box-sizing:border-box;}
+.ws-fact {border-left:3px solid var(--ws-color); background:#eef4ef; border-radius:0 8px 8px 0; padding:9px 14px;}
+.ws-fact li,.ws-fact p,.ws-fact small {margin:0; font-size:16px; line-height:1.52; white-space:pre-wrap; overflow-wrap:anywhere; color:#304c40;}
+.ws-fact ul {padding-left:19px; margin:0;}
+.ws-fact small {display:block; margin-top:4px; font-size:13px;}
+.ws-footer {display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 18px; background:white; border-top:1px solid #d4dfd4;}
+.ws-save,.ws-downloads {display:flex; align-items:center; gap:8px;}
+.ws-save small,.ws-downloads>small {max-width:145px; font-size:13px; line-height:1.35; color:#456452;}
+.ws-downloads>small {max-width:110px;}
+.ws-downloads a {display:inline-flex; align-items:center; justify-content:center; min-height:44px; gap:7px; padding:6px 13px; border:1px solid #87a796; border-radius:9px; color:#244d41; background:white; font-size:16px; font-weight:750; text-decoration:none; white-space:nowrap;}
+.ws-downloads a[data-ws-pdf] {background:#194f44; border-color:#194f44; color:white;}
+.ws-downloads a[aria-disabled="true"] {opacity:.5; pointer-events:none;}
+.ws-page {display:flex; gap:3px; align-items:center; white-space:nowrap; font-size:13px;}
+.ws-page select {margin:0; width:auto;}
+.ws-page[hidden] {display:none;}
+.ws-dialog :is(a,button,input,textarea,select):focus-visible {outline:3px solid #be791d; outline-offset:2px;}
+.record-btn #evidenceCount[hidden] {display:none;}
+@media (max-width:710px) {
+  .worksheet-modal[open] {width:calc(100vw - 8px);}
+  .worksheet-modal .ws-dialog {max-height:96dvh;}
+  .ws-header,.ws-identity,.ws-footer {padding-left:11px; padding-right:11px;}
+  .ws-identity {grid-template-columns:1.45fr 1fr .7fr; gap:6px;}
+  .ws-scroll {padding:8px;} .ws-paper {padding:12px;}
+  .ws-footer {flex-wrap:wrap;} .ws-save small {max-width:none;}
+  .ws-downloads {margin-left:auto; flex-wrap:wrap;}
+}
+@media (max-width:525px) {
+  .ws-save,.ws-downloads {width:100%;} .ws-downloads {justify-content:flex-end;}
+  .ws-downloads>small {margin-right:auto;}
+  .ws-downloads a {font-size:15px; padding:6px 9px;}
+  .ws-header {gap:5px;} .ws-all {font-size:13px;}
+  .ws-identity select,.ws-identity input {padding-inline:5px; font-size:14px;}
+  .ws-scroll {scrollbar-gutter:auto;} .ws-page {font-size:12px;} .ws-downloads {gap:4px;}
+}
+@media (max-height:680px) and (min-width:620px) {
+  .worksheet-modal .ws-dialog {max-height:96dvh;}
+  .ws-header {padding-block:5px;} .ws-identity {padding-bottom:6px;}
+  .ws-scroll {padding-block:8px;} .ws-footer {padding-block:6px;}
+}
+@media print {
+  .worksheet-modal .ws-header,.worksheet-modal .ws-footer {display:none;}
+  .worksheet-modal[open],.worksheet-modal .ws-dialog,.worksheet-modal .ws-scroll {display:block; max-height:none; overflow:visible; width:100%;}
+}

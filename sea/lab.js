@@ -28,7 +28,8 @@
     });
   }
   const N=root.SeaNotebook, data=options.data;
-  const state={...data,tool:'orbit',movingId:null};
+  const state=data;
+  let tool='orbit',movingId=null;
   if(!state.firstScene&&!state.runs.length)state.firstScene=N.capture(state.water,state.buildings);
   const scenes=()=>N.allScenes(state);
   const history=[];
@@ -38,30 +39,28 @@
     hideToast=setTimeout(()=>$('toast').classList.remove('show'),2400);
   }
   function save() {
-    const {tool,movingId,...persisted}=state;
-    Object.assign(data,persisted);
     if(!options.save()&&!storageWarned){storageWarned=true;announce('이 기기에서는 자동 저장할 수 없어요. 탐구 노트를 그림으로 저장하세요.');}
   }
   function render(){
     $('level').value=state.water;$('level').style.setProperty('--val',state.water*10+'%');
     $('target').textContent=state.water+'단계';$('level').setAttribute('aria-valuetext',state.water+'단계');
     $('less').disabled=state.water<=0;$('more').disabled=state.water>=10;$('total').textContent=state.buildings.length;
-    $('tank').dataset.mode=state.tool;
+    $('tank').dataset.mode=tool;
     $('nameToggle').setAttribute('aria-pressed',state.showBuildingNames);
-    $('orbit').setAttribute('aria-pressed',state.tool==='orbit');$('move').setAttribute('aria-pressed',state.tool==='move');
-    ui.querySelectorAll('[data-building]').forEach(b=>b.setAttribute('aria-pressed',state.tool==='place'&&state.selected===b.dataset.building));
-    $('hint').textContent=state.tool==='orbit'?'손가락으로 밀어 마을을 돌려 보세요.':state.tool==='place'?B.TYPES[state.selected].name+' 모형을 놓을 땅을 눌러요.':state.movingId?'선택한 건물을 옮길 땅을 눌러요.':'옮길 건물이나 건물 이름을 눌러요.';
+    $('orbit').setAttribute('aria-pressed',tool==='orbit');$('move').setAttribute('aria-pressed',tool==='move');
+    ui.querySelectorAll('[data-building]').forEach(b=>b.setAttribute('aria-pressed',tool==='place'&&state.selected===b.dataset.building));
+    $('hint').textContent=tool==='orbit'?'손가락으로 밀어 마을을 돌려 보세요.':tool==='place'?B.TYPES[state.selected].name+' 모형을 놓을 땅을 눌러요.':movingId?'선택한 건물을 옮길 땅을 눌러요.':'옮길 건물이나 건물 이름을 눌러요.';
     $('undo').disabled=!history.length;
     $('removeLast').disabled=!state.buildings.length;
     const n=scenes().length;
     $('recordTip').textContent=n<2?'처음 장면은 노트에 담았어요. 물 높이를 바꾼 뒤 다음 장면을 기록해요.':'탐구 노트에서 기록한 '+n+'개 장면을 골라 비교해요.';
-    tank.set(state);
+    tank.set({...state,tool,movingId});
   }
   function setLevel(value){
     state.water=C.clamp(Math.round(value),0,10);save();render();$('record').disabled=!tank.settled();
   }
-  function setTool(tool, building) {
-    state.tool=tool;state.movingId=null;if(building){state.selected=building;save();}render();
+  function setTool(nextTool, building) {
+    tool=nextTool;movingId=null;if(building){state.selected=building;save();}render();
   }
   function rememberLayout(){history.push(state.buildings.map(b=>({...b})));if(history.length>40)history.shift();}
   function start(){
@@ -73,18 +72,18 @@
     $('wetCount').textContent=detail.wet;$('record').disabled=detail.moving;
   });
   $('tank').addEventListener('tank-tap',({detail:{tile,building}})=>{
-    if(state.tool==='move'&&!state.movingId){
-      if(building){state.movingId=building;render();}else announce('먼저 옮길 건물을 눌러요.');
+    if(tool==='move'&&!movingId){
+      if(building){movingId=building;render();}else announce('먼저 옮길 건물을 눌러요.');
       return;
     }
     if(!tile){announce('수조 안의 땅을 눌러요.');return;}
-    const old=state.buildings.find(b=>b.id===state.movingId);
+    const old=state.buildings.find(b=>b.id===movingId);
     if(!old&&state.buildings.length>=24){announce('건물은 24개까지 놓을 수 있어요.');return;}
     const candidate=B.create(old?.type||state.selected,tile.x,tile.z,old?.id||'b-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));
     if(C.terrain(candidate.x,candidate.z)<.06){announce('처음부터 바다였던 곳이에요. 땅을 골라 주세요.');return;}
     if(state.buildings.some(b=>b.id!==candidate.id&&B.overlaps(b,candidate))){announce('건물이 겹쳐요. 조금 더 넓은 땅을 골라요.');return;}
     rememberLayout();
-    if(old){state.buildings=state.buildings.map(b=>b.id===old.id?candidate:b);state.movingId=null;}
+    if(old){state.buildings=state.buildings.map(b=>b.id===old.id?candidate:b);movingId=null;}
     else state.buildings.push(candidate);
     save();render();announce(candidate.name+(old?' 모형을 옮겼어요.':' 모형을 놓았어요.'));
   });
@@ -95,7 +94,7 @@
     icons($('dialogBody'));if(!dialog.open)dialog.showModal();$('close').focus();
   }
   const notebook=N.connect({state,scenes,save,openDialog,close:()=>dialog.close(),announce,byId:$,
-    addEvidence:options.addEvidence,complete:options.complete,isComplete:options.isComplete});
+    openWorksheet:options.openWorksheet,addEvidence:options.addEvidence,complete:options.complete,isComplete:options.isComplete});
   function record(){
     if(!tank.settled())return;
     if(state.runs.length>=100){announce('장면을 100번 기록했어요. 탐구 노트에서 비교할 장면을 골라요.');return;}
@@ -110,15 +109,15 @@
   $('move').onclick=()=>setTool('move');$('orbit').onclick=()=>setTool('orbit');
   $('removeLast').onclick=()=>{
     if(!state.buildings.length)return;
-    rememberLayout();state.buildings.pop();state.movingId=null;save();render();
+    rememberLayout();state.buildings.pop();movingId=null;save();render();
   };
-  $('undo').onclick=()=>{if(history.length){state.buildings=history.pop();state.movingId=null;save();render();announce('마지막 배치 변경을 되돌렸어요.');}};
+  $('undo').onclick=()=>{if(history.length){state.buildings=history.pop();movingId=null;save();render();announce('마지막 배치 변경을 되돌렸어요.');}};
   $('nameToggle').onclick=()=>{state.showBuildingNames=!state.showBuildingNames;save();render();};
   $('zoomIn').onclick=()=>tank.zoom(.14);$('zoomOut').onclick=()=>tank.zoom(-.14);$('cameraHome').onclick=()=>tank.reset();
   $('openNotes').onclick=notebook.open;$('principle').onclick=options.principle;$('record').onclick=record;
   $('reset').onclick=()=>{
     openDialog('수조를 처음으로 되돌릴까요?','<p>처음 건물 배치와 물 높이 0단계로 돌아가요. 탐구 노트에 적은 내용과 관찰값은 보관해요.</p><div class="actions"><button id="cancelReset" class="subtle">취소</button><button id="confirmReset" class="primary">수조 초기화</button></div>');
-    $('cancelReset').onclick=()=>dialog.close();$('confirmReset').onclick=()=>{state.buildings=B.normalize(C.BASE_BUILDINGS);state.water=0;state.movingId=null;state.tool='orbit';history.length=0;tank.reset();save();render();dialog.close();};
+    $('cancelReset').onclick=()=>dialog.close();$('confirmReset').onclick=()=>{state.buildings=B.normalize(C.BASE_BUILDINGS);state.water=0;movingId=null;tool='orbit';history.length=0;tank.reset();save();render();dialog.close();};
   };
   $('close').onclick=()=>dialog.close();dialog.setAttribute('aria-labelledby','dialogTitle');
   start();

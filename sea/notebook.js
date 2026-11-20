@@ -109,7 +109,7 @@
     }
     return lines;
   }
-  function connect({state,scenes,save,openDialog,close,announce,byId,addEvidence,complete,isComplete}){
+  function connect({state,scenes,save,openDialog,close,announce,byId,openWorksheet,addEvidence,complete,isComplete}){
     const n=state.notebook;
     let page=0;
     const pair=()=>selectedPair(state);
@@ -171,10 +171,11 @@
       const p=pair();
       const tabs=['관찰 결과','생활 영향 예상','더 탐구하기'];
       const nav=tabs.map((t,i)=>'<button class="note-tab" aria-current="'+(page===i?'step':'false')+'" data-step="'+i+'"><span>'+['1','2','＋'][i]+'</span>'+t+'</button>').join('');
-      const footer='<div class="note-footer"><a id="export" class="subtle" href="#" download="해수면_탐구_노트.png">노트 그림 저장</a><button id="keep-evidence" class="subtle">관찰 증거 담기</button><button id="finish-lesson" class="subtle">'+(isComplete()?'✓ 탐구 완료':'탐구 완료 표시')+'</button>'+
+      const footer='<div class="note-footer"><button id="worksheet" class="subtle">04 기록지 다운로드</button><a id="export" class="subtle" href="#" download="해수면_탐구_노트.png">노트 그림 저장</a><button id="keep-evidence" class="subtle">관찰 증거 담기</button><button id="finish-lesson" class="subtle">'+(isComplete()?'✓ 탐구 완료':'탐구 완료 표시')+'</button>'+
         (page===0?'<button id="next-step" class="primary">생활 영향 예상하기 →</button>':'<button class="primary return-sim">마을로 돌아가기</button>')+'</div>';
       openDialog('해수면 탐구 노트','<nav class="note-tabs" aria-label="탐구 노트 활동">'+nav+'</nav><div id="note-sheet">'+[observations,impacts,extra][page](p)+'</div>'+footer+'<p id="lesson-feedback" class="lesson-feedback" role="status"></p>');
       const body=byId('dialogBody');
+      byId('worksheet').onclick=()=>{close();openWorksheet();};
       for(const b of body.querySelectorAll('[data-step]'))b.onclick=()=>show(Number(b.dataset.step),true);
       for(const b of body.querySelectorAll('.return-sim'))b.onclick=close;
       body.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{
@@ -323,5 +324,5 @@
     if(!png.startsWith('data:image/png;base64,'))throw new Error('PNG export failed');
     return png;
   }
-  root.SeaNotebook={capture,restoreLab,allScenes,selectedPair,comparisonLines,reportLines,connect};
+  root.SeaNotebook={investigations,sceneSummary,capture,restoreLab,allScenes,selectedPair,comparisonLines,reportLines,connect};
 })(typeof window!=='undefined'?window:globalThis);
